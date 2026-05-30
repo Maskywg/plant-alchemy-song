@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>綠色植物煉金術 — 根系 3D 音樂版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Orbitron:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #02060a;
+    --ink: #061018;
+    --panel: rgba(5, 15, 26, 0.84);
+    --gold: #f0b429;
+    --gold-light: #ffd166;
+    --cyan: #00e5ff;
+    --green: #39ff14;
+    --leaf: #76ff62;
+    --violet: #bf5fff;
+    --pink: #ff6eb4;
+    --text: #edf7ff;
+    --muted: #aac3d4;
+    --border: rgba(240, 180, 41, 0.2);
+    --shadow-gold: 0 0 22px rgba(240,180,41,.45), 0 0 70px rgba(240,180,41,.16);
+    --shadow-cyan: 0 0 24px rgba(0,229,255,.42), 0 0 64px rgba(0,229,255,.13);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    padding-bottom: 116px;
+    overflow-x: hidden;
+    color: var(--text);
+    font-family: "Noto Sans TC", system-ui, sans-serif;
+    background:
+      radial-gradient(circle at 12% 12%, rgba(0,229,255,.16), transparent 30%),
+      radial-gradient(circle at 84% 10%, rgba(57,255,20,.13), transparent 34%),
+      linear-gradient(180deg, #01040a 0%, #02070c 48%, #050305 100%);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background-image:
+      linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,.75), transparent 78%);
+  }
+
+  #progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    z-index: 99;
+    background: linear-gradient(90deg, var(--green), var(--cyan), var(--gold), var(--pink));
+    box-shadow: 0 0 14px rgba(240,180,41,.75);
+  }
+
+  .hero {
+    position: relative;
+    min-height: 96vh;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  #root-visual {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: radial-gradient(circle at 50% 42%, rgba(0,229,255,.12), transparent 30%);
+  }
+
+  .aurora {
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 35% 20%, rgba(0,229,255,.24), transparent 34%),
+      radial-gradient(ellipse at 70% 30%, rgba(191,95,255,.18), transparent 36%),
+      radial-gradient(ellipse at 46% 78%, rgba(240,180,41,.2), transparent 34%);
+    filter: blur(36px);
+    animation: aurora-flow 11s ease-in-out infinite alternate;
+  }
+
+  @keyframes aurora-flow {
+    from { transform: translate3d(-2%, -1%, 0) rotate(-2deg); opacity: .68; }
+    to { transform: translate3d(2%, 1%, 0) rotate(3deg); opacity: .95; }
+  }
+
+  .hero-copy {
+    width: min(1120px, calc(100% - 44px));
+    margin: 0 auto;
+    padding: 84px 0 58px;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 22px;
+    border: 1px solid rgba(0,229,255,.38);
+    border-radius: 999px;
+    color: var(--cyan);
+    font-family: Orbitron, monospace;
+    font-size: .76rem;
+    letter-spacing: .28em;
+    text-shadow: var(--shadow-cyan);
+    background: rgba(0,229,255,.07);
+  }
+
+  .main-title {
+    position: relative;
+    display: inline-block;
+    margin: 28px 0 20px;
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(3rem, 8vw, 7.2rem);
+    line-height: 1.08;
+    letter-spacing: .07em;
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0,0,0,.9);
+  }
+
+  .main-title::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 0%, transparent 16%, #6b4200 25%, #f0b429 43%, #fffce0 52%, #f0b429 62%, #8a5400 74%, transparent 86%, transparent 100%);
+    background-size: 320% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: title-scan 6.8s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes title-scan {
+    from { background-position: 150% center; }
+    to { background-position: -50% center; }
+  }
+
+  .subtitle {
+    max-width: 820px;
+    margin: 0 auto 28px;
+    color: var(--muted);
+    font-size: clamp(1.05rem, 2.6vw, 1.45rem);
+    line-height: 2;
+    letter-spacing: .08em;
+  }
+
+  .subtitle strong:nth-child(1) { color: var(--green); text-shadow: 0 0 16px rgba(57,255,20,.45); }
+  .subtitle strong:nth-child(2) { color: var(--cyan); text-shadow: var(--shadow-cyan); }
+  .subtitle strong:nth-child(3) { color: var(--gold-light); text-shadow: var(--shadow-gold); }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 10px 18px;
+    border: 1px solid rgba(240,180,41,.42);
+    border-radius: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: .08em;
+    background: rgba(240,180,41,.1);
+  }
+
+  .button.primary {
+    border-color: rgba(0,229,255,.48);
+    background: rgba(0,229,255,.12);
+    box-shadow: var(--shadow-cyan);
+  }
+
+  .hero-stats {
+    width: min(980px, calc(100% - 44px));
+    margin: -22px auto 72px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .stat {
+    min-height: 138px;
+    padding: 22px;
+    border: 1px solid rgba(0,229,255,.22);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(5,18,30,.86), rgba(1,8,16,.78));
+    box-shadow: 0 18px 60px rgba(0,0,0,.28);
+  }
+
+  .stat span {
+    color: var(--cyan);
+    font-family: Orbitron, monospace;
+    font-size: .78rem;
+    letter-spacing: .16em;
+  }
+
+  .stat strong {
+    display: block;
+    margin: 10px 0 6px;
+    color: var(--gold-light);
+    font-size: clamp(1.4rem, 3vw, 2.15rem);
+    text-shadow: var(--shadow-gold);
+  }
+
+  .stat p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .section {
+    width: min(1060px, calc(100% - 44px));
+    margin: 0 auto 70px;
+  }
+
+  .section-heading {
+    margin-bottom: 26px;
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--cyan);
+    font-family: Orbitron, monospace;
+    font-size: .78rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--gold-light);
+    font-family: "Noto Serif TC", serif;
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
+    line-height: 1.35;
+    letter-spacing: .06em;
+    text-shadow: var(--shadow-gold);
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .intro-card,
+  .accordion-item,
+  .lyrics-panel {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(6,18,29,.9), rgba(2,8,16,.86));
+    box-shadow: 0 18px 50px rgba(0,0,0,.26);
+  }
+
+  .intro-card {
+    padding: 28px 22px;
+  }
+
+  .card-icon {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 2.3rem;
+    filter: drop-shadow(0 0 14px rgba(240,180,41,.55));
+  }
+
+  .intro-card h3 {
+    margin: 0 0 10px;
+    color: var(--gold-light);
+    font-family: "Noto Serif TC", serif;
+    font-size: 1.2rem;
+    letter-spacing: .06em;
+  }
+
+  .intro-card p,
+  .accordion-content p,
+  .section-lead {
+    color: var(--muted);
+    line-height: 1.9;
+    letter-spacing: .03em;
+  }
+
+  .accordion-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .accordion-header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 54px 34px 1fr 26px;
+    align-items: center;
+    gap: 14px;
+    min-height: 78px;
+    padding: 18px 22px;
+    border: 0;
+    color: var(--text);
+    text-align: left;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .acc-num {
+    color: var(--cyan);
+    font-family: Orbitron, monospace;
+    font-size: .78rem;
+    letter-spacing: .08em;
+  }
+
+  .acc-icon { font-size: 1.45rem; }
+
+  .acc-title {
+    color: #fff;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 900;
+    font-size: clamp(1rem, 2.4vw, 1.28rem);
+    letter-spacing: .05em;
+    line-height: 1.5;
+  }
+
+  .acc-arrow {
+    color: var(--gold);
+    font-size: 1.2rem;
+    transition: transform .25s ease;
+  }
+
+  .accordion-item.open .acc-arrow { transform: rotate(180deg); }
+
+  .accordion-content {
+    display: none;
+    padding: 0 22px 24px 124px;
+    border-top: 1px solid rgba(240,180,41,.12);
+  }
+
+  .accordion-item.open .accordion-content { display: block; }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .tag {
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(0,229,255,.28);
+    color: var(--cyan);
+    font-family: Orbitron, monospace;
+    font-size: .72rem;
+    letter-spacing: .06em;
+    background: rgba(0,229,255,.07);
+  }
+
+  .lyrics-panel {
+    padding: 22px;
+  }
+
+  .lyrics-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .lyrics-toolbar button,
+  .sync-mode button,
+  #play-btn {
+    min-height: 40px;
+    border: 1px solid rgba(0,229,255,.35);
+    border-radius: 8px;
+    color: var(--text);
+    font: inherit;
+    font-weight: 800;
+    background: rgba(0,229,255,.09);
+    cursor: pointer;
+  }
+
+  .lyrics-toolbar button {
+    padding: 8px 12px;
+  }
+
+  .sync-mode {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 16px;
+  }
+
+  .sync-mode button {
+    padding: 8px 12px;
+    color: var(--muted);
+    border-color: rgba(255,255,255,.14);
+    background: rgba(255,255,255,.05);
+  }
+
+  .sync-mode button.active {
+    color: #fff;
+    border-color: rgba(240,180,41,.72);
+    background: rgba(240,180,41,.15);
+    box-shadow: 0 0 22px rgba(240,180,41,.18);
+  }
+
+  .calibrate-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin: 0 0 18px;
+    padding: 12px;
+    border: 1px solid rgba(57,255,20,.24);
+    border-radius: 8px;
+    background: rgba(57,255,20,.06);
+  }
+
+  .calibrate-row button {
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid rgba(57,255,20,.48);
+    border-radius: 8px;
+    color: #fff;
+    font: inherit;
+    font-weight: 900;
+    background: rgba(57,255,20,.12);
+    cursor: pointer;
+  }
+
+  .calibrate-row span {
+    color: var(--muted);
+    font-size: .92rem;
+    line-height: 1.6;
+  }
+
+  .tap-panel {
+    display: none;
+    margin: 0 0 18px;
+    padding: 14px;
+    border: 1px solid rgba(0,229,255,.28);
+    border-radius: 8px;
+    background: rgba(0,229,255,.06);
+  }
+
+  .tap-panel.active {
+    display: block;
+  }
+
+  .tap-target {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: clamp(1.05rem, 3vw, 1.35rem);
+    font-weight: 900;
+    line-height: 1.5;
+  }
+
+  .tap-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tap-actions button {
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid rgba(0,229,255,.38);
+    border-radius: 8px;
+    color: #fff;
+    font: inherit;
+    font-weight: 900;
+    background: rgba(0,229,255,.1);
+    cursor: pointer;
+  }
+
+  .lyrics-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .lyric-row {
+    display: grid;
+    grid-template-columns: 52px 78px 1fr;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    min-height: 54px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 8px;
+    color: var(--muted);
+    text-align: left;
+    background: rgba(255,255,255,.025);
+    cursor: pointer;
+  }
+
+  .lyric-row.active {
+    border-color: rgba(240,180,41,.72);
+    color: #fff;
+    background: linear-gradient(135deg, rgba(240,180,41,.16), rgba(0,229,255,.09));
+    box-shadow: 0 0 28px rgba(240,180,41,.12);
+  }
+
+  .lyric-row span:nth-child(1),
+  .lyric-row span:nth-child(2) {
+    color: var(--cyan);
+    font-family: Orbitron, monospace;
+    font-size: .76rem;
+  }
+
+  .lyric-row.active span:nth-child(1),
+  .lyric-row.active span:nth-child(2) {
+    color: var(--gold-light);
+  }
+
+  #mbar-wrap {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    z-index: 100;
+    width: min(660px, calc(100% - 24px));
+    padding: 2px;
+    transform: translateX(-50%);
+    border-radius: 14px;
+    background: linear-gradient(90deg, #5a3800, #f0b429, #fff7c8, #00e5ff, #5a3800);
+    background-size: 280% 100%;
+    animation: gold-run 3s linear infinite;
+    box-shadow: 0 0 24px rgba(240,180,41,.45), 0 8px 34px rgba(0,0,0,.76);
+  }
+
+  @keyframes gold-run {
+    from { background-position: 0% 50%; }
+    to { background-position: 280% 50%; }
+  }
+
+  #mbar-inner {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    gap: 14px;
+    align-items: center;
+    min-height: 74px;
+    padding: 13px 15px;
+    border-radius: 12px;
+    background: rgba(3,8,16,.97);
+  }
+
+  #play-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    padding: 0;
+    color: var(--gold-light);
+    border-color: rgba(240,180,41,.7);
+    background: rgba(240,180,41,.12);
+  }
+
+  #play-btn.on {
+    color: var(--cyan);
+    border-color: rgba(0,229,255,.75);
+    background: rgba(0,229,255,.12);
+  }
+
+  #music-label {
+    display: block;
+    color: var(--gold-light);
+    font-family: Orbitron, monospace;
+    font-size: .72rem;
+    letter-spacing: .16em;
+  }
+
+  #lyric-line {
+    display: block;
+    min-height: 1.65em;
+    margin-top: 3px;
+    color: #eaf6ff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(.9rem, 2.4vw, 1.1rem);
+    font-style: italic;
+    line-height: 1.45;
+  }
+
+  #delay-info {
+    min-width: 86px;
+    color: var(--muted);
+    font-family: Orbitron, monospace;
+    font-size: .66rem;
+    text-align: right;
+  }
+
+  audio { display: none; }
+
+  @media (max-width: 840px) {
+    .hero { min-height: 92vh; }
+    .hero-copy { width: min(100% - 28px, 1120px); padding-top: 58px; }
+    .hero-stats,
+    .intro-grid { grid-template-columns: 1fr; }
+    .accordion-header {
+      grid-template-columns: 42px 28px 1fr 22px;
+      gap: 10px;
+      padding: 16px 14px;
+    }
+    .accordion-content { padding: 0 14px 20px; }
+    .lyric-row { grid-template-columns: 40px 66px 1fr; gap: 8px; }
+    #mbar-inner { grid-template-columns: 44px 1fr; }
+    #delay-info { grid-column: 1 / -1; text-align: left; padding-left: 58px; }
+  }
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<header class="hero" id="top">
+  <canvas id="root-visual" aria-label="根系植物 3D 動畫"></canvas>
+  <div class="aurora"></div>
+  <div class="hero-copy">
+    <div class="header-badge">GREEN ALCHEMY · PHYTOMINING · ROOT SYSTEM</div>
+    <h1 class="main-title" data-text="綠色植物煉金術">綠色植物煉金術</h1>
+    <p class="subtitle"><strong>植物根系</strong> 在土壤中吸收金屬離子，經由 <strong>生物累積</strong> 與低碳回收，成為印尼礦業轉型的 <strong>綠色煉金術</strong>。</p>
+    <div class="hero-actions">
+      <a class="button primary" href="#lyrics-section">播放歌曲與同步歌詞</a>
+      <a class="button" href="#alchemy">看植物採礦流程</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero-stats" aria-label="重點指標">
+  <article class="stat">
+    <span>ROOT UPTAKE</span>
+    <strong>根吸收</strong>
+    <p>主視覺以 3D 根系呈現金屬離子被植物吸收、向莖葉輸送的過程。</p>
+  </article>
+  <article class="stat">
+    <span>LOW CARBON</span>
+    <strong>低碳提煉</strong>
+    <p>以生物累積取代高破壞性開採，適合做為綠色產業敘事入口。</p>
+  </article>
+  <article class="stat">
+    <span>LYRIC SYNC</span>
+    <strong>歌詞同步</strong>
+    <p>底部播放器會依歌曲秒數切換歌詞，並保留即時校準按鈕。</p>
+  </article>
+</section>
+
+<main>
+  <section class="section" id="alchemy">
+    <div class="section-heading">
+      <p class="eyebrow">Plant Mining Model</p>
+      <h2>從根到金屬的提煉路徑</h2>
+      <p class="section-lead">這版沿用參考頁的霓虹科技感與折疊式閱讀節奏，但把第一視覺改成植物根系 3D 動畫，讓「植物採礦」一打開就能被看見。</p>
+    </div>
+    <div class="intro-grid">
+      <article class="intro-card">
+        <span class="card-icon">根</span>
+        <h3>根系吸附</h3>
+        <p>根毛與根圈微生物協助金屬離子進入植物體，形成可視化的地下吸收網絡。</p>
+      </article>
+      <article class="intro-card">
+        <span class="card-icon">葉</span>
+        <h3>生物累積</h3>
+        <p>金屬從根部向莖葉轉運，高累積植物能把低濃度資源轉成可回收材料。</p>
+      </article>
+      <article class="intro-card">
+        <span class="card-icon">金</span>
+        <h3>灰化回收</h3>
+        <p>收割後以乾燥、灰化與化學萃取回收金屬，降低裸露開採與尾礦壓力。</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="eyebrow">Knowledge Panels</p>
+      <h2>印尼貴金屬提煉的綠色敘事</h2>
+    </div>
+    <div class="accordion-list">
+      <article class="accordion-item open">
+        <button class="accordion-header" type="button">
+          <span class="acc-num">01</span><span class="acc-icon">Ni</span><span class="acc-title">為什麼是印尼？</span><span class="acc-arrow">⌄</span>
+        </button>
+        <div class="accordion-content">
+          <p>印尼擁有鎳、金與多種伴生金屬資源，綠色產業轉型的關鍵不是只增加產量，而是降低採礦造成的土地、水體與社區壓力。</p>
+          <div class="tag-row"><span class="tag">Nickel</span><span class="tag">Gold</span><span class="tag">Critical Minerals</span></div>
+        </div>
+      </article>
+      <article class="accordion-item">
+        <button class="accordion-header" type="button">
+          <span class="acc-num">02</span><span class="acc-icon">Rh</span><span class="acc-title">根圈如何讓金屬進入植物？</span><span class="acc-arrow">⌄</span>
+        </button>
+        <div class="accordion-content">
+          <p>根部分泌物會改變局部酸鹼值與金屬可溶性，根圈微生物也可能協助金屬螯合與移動。頁面中的亮點粒子代表金屬離子被根系捕捉。</p>
+          <div class="tag-row"><span class="tag">Rhizosphere</span><span class="tag">Chelation</span><span class="tag">Uptake</span></div>
+        </div>
+      </article>
+      <article class="accordion-item">
+        <button class="accordion-header" type="button">
+          <span class="acc-num">03</span><span class="acc-icon">Bio</span><span class="acc-title">植物採礦不是魔法，而是流程工程</span><span class="acc-arrow">⌄</span>
+        </button>
+        <div class="accordion-content">
+          <p>真正的流程包含選種、土壤條件調整、生長期管理、收割、乾燥、灰化與金屬萃取。每一步都會影響回收率與商業可行性。</p>
+          <div class="tag-row"><span class="tag">Harvest</span><span class="tag">Ashing</span><span class="tag">Recovery</span></div>
+        </div>
+      </article>
+      <article class="accordion-item">
+        <button class="accordion-header" type="button">
+          <span class="acc-num">04</span><span class="acc-icon">ESG</span><span class="acc-title">綠色產業的價值在哪裡？</span><span class="acc-arrow">⌄</span>
+        </button>
+        <div class="accordion-content">
+          <p>植物採礦最適合被放在低品位礦、尾礦地、污染土地修復與教育展示中。它不一定取代大型礦場，但能成為更低衝擊的補充方案。</p>
+          <div class="tag-row"><span class="tag">ESG</span><span class="tag">Tailings</span><span class="tag">Restoration</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="lyrics-section">
+    <div class="section-heading">
+      <p class="eyebrow">Music + Lyrics</p>
+      <h2>歌曲與同步歌詞</h2>
+      <p class="section-lead">這裡使用你提供的 MP4 歌曲。歌詞採用逐句起訖時間顯示，若實際播放仍有偏差，可用底部或下方按鈕即時校準。</p>
+    </div>
+    <div class="lyrics-panel">
+      <div class="sync-mode" aria-label="同步模式">
+        <button class="active" type="button" data-mode="mp4">MP4 預設同步</button>
+        <button type="button" data-mode="custom">手動精準同步</button>
+        <button type="button" data-mode="vocal">參考人聲同步</button>
+        <button type="button" data-mode="reference">參考頁原始同步</button>
+        <button type="button" id="reset-sync">重設校準</button>
+      </div>
+      <div class="calibrate-row">
+        <button type="button" id="start-tap-sync">開始逐句打點同步</button>
+        <button type="button" id="mark-vocal-start">只對齊第一句</button>
+        <span id="calibrate-note">要精準同步，請按「開始逐句打點同步」，每一句人聲開始時按「記錄這一句」。</span>
+      </div>
+      <div class="tap-panel" id="tap-panel">
+        <p class="tap-target" id="tap-target">準備記錄第 1 句</p>
+        <div class="tap-actions">
+          <button type="button" id="tap-line">記錄這一句（或按空白鍵）</button>
+          <button type="button" id="undo-tap">退回上一句</button>
+          <button type="button" id="finish-tap">完成並使用手動同步</button>
+          <button type="button" id="cancel-tap">取消</button>
+        </div>
+      </div>
+      <div class="lyrics-toolbar">
+        <button type="button" data-shift="-0.5">字幕早 0.5 秒</button>
+        <button type="button" data-shift="0.5">字幕晚 0.5 秒</button>
+        <button type="button" data-shift="-2">字幕早 2 秒</button>
+        <button type="button" data-shift="2">字幕晚 2 秒</button>
+      </div>
+      <div class="lyrics-list" id="lyrics-list" aria-label="完整同步歌詞"></div>
+    </div>
+  </section>
+</main>
+
+<div id="mbar-wrap">
+  <div id="mbar-inner">
+    <button id="play-btn" type="button" title="播放或暫停">▶</button>
+    <div>
+      <span id="music-label">THE DAYS WE LEFT BEHIND</span>
+      <span id="lyric-line">按下播放後，歌詞會跟著歌聲切換</span>
+    </div>
+    <span id="delay-info">offset 0.0s</span>
+  </div>
+</div>
+
+<audio id="bg-audio" preload="metadata" src="./assets/song.mp4"></audio>
+
+<script type="module">
+import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+const canvas = document.querySelector("#root-visual");
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x02060a, 0.045);
+
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 120);
+camera.position.set(0, 4.8, 18);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+scene.add(new THREE.AmbientLight(0x6fdfff, 0.7));
+const keyLight = new THREE.PointLight(0x00e5ff, 80, 38);
+keyLight.position.set(-7, 8, 8);
+scene.add(keyLight);
+const goldLight = new THREE.PointLight(0xf0b429, 90, 42);
+goldLight.position.set(7, 3, 7);
+scene.add(goldLight);
+
+const rootGroup = new THREE.Group();
+scene.add(rootGroup);
+
+const rootMat = new THREE.MeshStandardMaterial({
+  color: 0x7a4b19,
+  roughness: 0.52,
+  metalness: 0.18,
+  emissive: 0x2f1800,
+  emissiveIntensity: 0.3
+});
+const glowRootMat = new THREE.MeshStandardMaterial({
+  color: 0xf0b429,
+  roughness: 0.25,
+  metalness: 0.35,
+  emissive: 0xf0b429,
+  emissiveIntensity: 0.72
+});
+const stemMat = new THREE.MeshStandardMaterial({
+  color: 0x39ff14,
+  roughness: 0.46,
+  metalness: 0.08,
+  emissive: 0x155b0c,
+  emissiveIntensity: 0.55
+});
+const leafMat = new THREE.MeshStandardMaterial({
+  color: 0x74ff67,
+  roughness: 0.38,
+  metalness: 0.05,
+  emissive: 0x1b8f18,
+  emissiveIntensity: 0.32,
+  side: THREE.DoubleSide
+});
+
+function makeTube(points, radius, material) {
+  const curve = new THREE.CatmullRomCurve3(points);
+  const geometry = new THREE.TubeGeometry(curve, 72, radius, 9, false);
+  return new THREE.Mesh(geometry, material);
+}
+
+for (let i = 0; i < 34; i += 1) {
+  const angle = (i / 34) * Math.PI * 2;
+  const depth = 5.5 + Math.random() * 4.5;
+  const spread = 2.1 + Math.random() * 5.2;
+  const points = [];
+  for (let j = 0; j < 6; j += 1) {
+    const p = j / 5;
+    const wiggle = Math.sin(p * Math.PI * 2 + i) * 0.65;
+    points.push(new THREE.Vector3(
+      Math.cos(angle + wiggle * 0.16) * spread * p,
+      -0.8 - depth * p,
+      Math.sin(angle + wiggle * 0.16) * spread * p
+    ));
+  }
+  rootGroup.add(makeTube(points, 0.035 + Math.random() * 0.04, i % 5 === 0 ? glowRootMat : rootMat));
+}
+
+const stem = makeTube([
+  new THREE.Vector3(0, -1.1, 0),
+  new THREE.Vector3(0.15, 0.8, 0.1),
+  new THREE.Vector3(-0.08, 2.8, 0),
+  new THREE.Vector3(0.1, 4.4, -0.08)
+], 0.16, stemMat);
+rootGroup.add(stem);
+
+for (let i = 0; i < 10; i += 1) {
+  const geometry = new THREE.SphereGeometry(0.42, 32, 16);
+  geometry.scale(1.8, 0.24, 0.72);
+  const leaf = new THREE.Mesh(geometry, leafMat);
+  const side = i % 2 === 0 ? 1 : -1;
+  leaf.position.set(side * (0.65 + (i % 5) * 0.34), 1.05 + i * 0.34, side * 0.08);
+  leaf.rotation.set(0.25, 0.22 * side, side * (0.42 + i * 0.08));
+  leaf.userData.baseRot = leaf.rotation.z;
+  rootGroup.add(leaf);
+}
+
+const particleMat = new THREE.MeshBasicMaterial({ color: 0xffd166, transparent: true, opacity: 0.82 });
+const ions = [];
+for (let i = 0; i < 110; i += 1) {
+  const ion = new THREE.Mesh(new THREE.SphereGeometry(0.035 + Math.random() * 0.035, 10, 10), particleMat);
+  const angle = Math.random() * Math.PI * 2;
+  const radius = 1 + Math.random() * 7;
+  ion.position.set(Math.cos(angle) * radius, -7 + Math.random() * 9, Math.sin(angle) * radius);
+  ion.userData = { angle, radius, speed: 0.18 + Math.random() * 0.42, lift: Math.random() * 6 };
+  scene.add(ion);
+  ions.push(ion);
+}
+
+function resize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+window.addEventListener("resize", resize);
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = performance.now() * 0.001;
+  rootGroup.rotation.y = Math.sin(t * 0.18) * 0.22;
+  rootGroup.position.y = Math.sin(t * 0.8) * 0.05;
+  rootGroup.children.forEach((child, index) => {
+    if (child.userData.baseRot !== undefined) child.rotation.z = child.userData.baseRot + Math.sin(t * 1.6 + index) * 0.08;
+  });
+  ions.forEach((ion) => {
+    ion.userData.angle += ion.userData.speed * 0.006;
+    ion.position.x = Math.cos(ion.userData.angle) * ion.userData.radius;
+    ion.position.z = Math.sin(ion.userData.angle) * ion.userData.radius;
+    ion.position.y += 0.012 + ion.userData.speed * 0.006;
+    if (ion.position.y > 4.8) ion.position.y = -7.2;
+  });
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+
+<script>
+const referenceLyrics = [
+  { t: 6.0, e: 10.0, s: "Looking back at white and black" },
+  { t: 11.5, e: 15.5, s: "Reminders of my past" },
+  { t: 17.0, e: 21.0, s: "Smoky bars and cheap guitars" },
+  { t: 22.5, e: 26.5, s: "But nothing built to last" },
+  { t: 28.0, e: 32.0, s: "Nothing ever stays" },
+  { t: 33.0, e: 37.0, s: "Nothing comes to mind" },
+  { t: 38.5, e: 42.5, s: "No one can erase" },
+  { t: 43.5, e: 48.0, s: "The days we left behind" },
+  { t: 50.0, e: 54.0, s: "See the boys of Dungeon Lane" },
+  { t: 55.5, e: 59.5, s: "Along the Mersey shore" },
+  { t: 61.0, e: 65.0, s: "Some of them will feel the pain" },
+  { t: 66.5, e: 70.5, s: "But some were meant for more" },
+  { t: 72.0, e: 76.0, s: "And nothing stays the same" },
+  { t: 77.0, e: 81.0, s: "No one needs to cry" },
+  { t: 82.5, e: 86.5, s: "Nothing can reclaim" },
+  { t: 87.5, e: 92.0, s: "The days we left behind" },
+  { t: 94.0, e: 98.0, s: "We met at Forthlin Road" },
+  { t: 99.5, e: 103.5, s: "And wrote a secret code" },
+  { t: 105.0, e: 109.0, s: "To never be spoken" },
+  { t: 110.5, e: 114.5, s: "I stand by what I said" },
+  { t: 116.0, e: 120.0, s: "The promise that I made" },
+  { t: 121.5, e: 125.5, s: "Will never be broken" },
+  { t: 140.0, e: 144.0, s: "Nothing ever stays" },
+  { t: 145.0, e: 149.0, s: "Nothing comes to mind" },
+  { t: 150.5, e: 154.5, s: "No one can erase" },
+  { t: 155.5, e: 160.0, s: "The days we left behind" },
+  { t: 162.0, e: 166.0, s: "The days we left behind..." },
+  { t: 168.0, e: 172.0, s: "The days we left..." },
+  { t: 174.0, e: 179.5, s: "Leaving it all behind." }
+];
+
+const vocalLyrics = referenceLyrics.map(line => ({ ...line }));
+
+const mp4Lyrics = [
+  { t: 14.2, e: 19.0, s: "Looking back at white and black" },
+  { t: 20.1, e: 24.7, s: "Reminders of my past" },
+  { t: 25.9, e: 30.6, s: "Smoky bars and cheap guitars" },
+  { t: 31.8, e: 36.6, s: "But nothing built to last" },
+  { t: 38.2, e: 42.5, s: "Nothing ever stays" },
+  { t: 43.7, e: 48.1, s: "Nothing comes to mind" },
+  { t: 49.3, e: 54.0, s: "No one can erase" },
+  { t: 55.3, e: 61.6, s: "The days we left behind" },
+  { t: 65.4, e: 70.0, s: "See the boys of Dungeon Lane" },
+  { t: 71.2, e: 75.8, s: "Along the Mersey shore" },
+  { t: 77.1, e: 81.9, s: "Some of them will feel the pain" },
+  { t: 83.1, e: 88.0, s: "But some were meant for more" },
+  { t: 89.5, e: 93.8, s: "And nothing stays the same" },
+  { t: 95.0, e: 99.4, s: "No one needs to cry" },
+  { t: 100.7, e: 105.5, s: "Nothing can reclaim" },
+  { t: 106.6, e: 115.5, s: "The days we left behind" },
+  { t: 124.3, e: 128.9, s: "We met at Forthlin Road" },
+  { t: 130.0, e: 134.6, s: "And wrote a secret code" },
+  { t: 135.7, e: 140.9, s: "To never be spoken" },
+  { t: 142.1, e: 146.5, s: "I stand by what I said" },
+  { t: 147.8, e: 152.4, s: "The promise that I made" },
+  { t: 153.5, e: 160.4, s: "Will never be broken" },
+  { t: 166.1, e: 170.3, s: "Nothing ever stays" },
+  { t: 171.7, e: 176.0, s: "Nothing comes to mind" },
+  { t: 177.3, e: 182.1, s: "No one can erase" },
+  { t: 183.4, e: 191.3, s: "The days we left behind" },
+  { t: 196.2, e: 204.3, s: "The days we left behind..." },
+  { t: 208.5, e: 217.6, s: "The days we left..." },
+  { t: 222.0, e: 235.0, s: "Leaving it all behind." }
+];
+
+const audio = document.querySelector("#bg-audio");
+const playBtn = document.querySelector("#play-btn");
+const lyricLine = document.querySelector("#lyric-line");
+const delayInfo = document.querySelector("#delay-info");
+const lyricsList = document.querySelector("#lyrics-list");
+const progressBar = document.querySelector("#progress-bar");
+const mbar = document.querySelector("#mbar-wrap");
+const modeButtons = document.querySelectorAll("[data-mode]");
+let customLyrics = loadCustomLyrics();
+let mode = localStorage.getItem("plantAlchemyModeV4") || (customLyrics ? "custom" : "mp4");
+let lyrics = getLyricsForMode(mode);
+let offset = Number(localStorage.getItem("plantAlchemyOffsetV4") || "0");
+let activeIndex = -1;
+let tapMode = false;
+let tapStarts = [];
+let tapIndex = 0;
+
+function getLyricsForMode(nextMode) {
+  if (nextMode === "custom" && customLyrics) return customLyrics;
+  if (nextMode === "mp4") return mp4Lyrics;
+  if (nextMode === "reference") return referenceLyrics;
+  return vocalLyrics;
+}
+
+function loadCustomLyrics() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("plantAlchemyCustomLyricsV1") || "null");
+    return Array.isArray(saved) && saved.length === referenceLyrics.length ? saved : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveCustomLyrics(nextLyrics) {
+  customLyrics = nextLyrics;
+  localStorage.setItem("plantAlchemyCustomLyricsV1", JSON.stringify(nextLyrics));
+}
+
+function fmt(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = String(Math.floor(seconds % 60)).padStart(2, "0");
+  return `${m}:${s}`;
+}
+
+function renderLyricsList() {
+  lyricsList.innerHTML = lyrics.map((line, index) => `
+    <button class="lyric-row" type="button" data-index="${index}">
+      <span>${String(index + 1).padStart(2, "0")}</span>
+      <span>${fmt(line.t)}</span>
+      <span>${line.s}</span>
+    </button>
+  `).join("");
+}
+
+function updateDelayInfo() {
+  const label = mode === "custom" ? "SYNC" : mode === "mp4" ? "MP4" : mode === "reference" ? "REF" : "VOCAL";
+  delayInfo.textContent = `${label} offset ${offset.toFixed(1)}s`;
+  localStorage.setItem("plantAlchemyOffsetV4", String(offset));
+  localStorage.setItem("plantAlchemyModeV4", mode);
+  modeButtons.forEach(button => {
+    button.classList.toggle("active", button.dataset.mode === mode);
+    if (button.dataset.mode === "custom") button.disabled = !customLyrics;
+  });
+}
+
+function currentLyricIndex() {
+  const adjusted = audio.currentTime + offset;
+  let index = -1;
+  for (let i = 0; i < lyrics.length; i += 1) {
+    if (adjusted >= lyrics[i].t) index = i;
+    else break;
+  }
+  return index;
+}
+
+function setActive(index) {
+  if (index === activeIndex) return;
+  const rows = lyricsList.querySelectorAll(".lyric-row");
+  if (rows[activeIndex]) rows[activeIndex].classList.remove("active");
+  activeIndex = index;
+  if (rows[activeIndex]) {
+    rows[activeIndex].classList.add("active");
+    rows[activeIndex].scrollIntoView({ block: "center", behavior: "smooth" });
+    lyricLine.textContent = lyrics[activeIndex].s;
+  } else if (!audio.paused) {
+    lyricLine.textContent = "♪";
+  }
+}
+
+function syncLyrics() {
+  if (audio.duration) {
+    progressBar.style.width = `${Math.min(100, (audio.currentTime / audio.duration) * 100)}%`;
+  }
+  setActive(currentLyricIndex());
+}
+
+playBtn.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.play().then(() => {
+      playBtn.textContent = "Ⅱ";
+      playBtn.classList.add("on");
+      mbar.classList.add("playing");
+      syncLyrics();
+    }).catch(() => {
+      lyricLine.textContent = "瀏覽器擋下自動播放，請再按一次播放。";
+    });
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
+    playBtn.classList.remove("on");
+    mbar.classList.remove("playing");
+  }
+});
+
+audio.addEventListener("timeupdate", syncLyrics);
+audio.addEventListener("ended", () => {
+  playBtn.textContent = "▶";
+  playBtn.classList.remove("on");
+  mbar.classList.remove("playing");
+});
+
+document.querySelectorAll("[data-shift]").forEach((button) => {
+  button.addEventListener("click", () => {
+    offset = Math.round((offset + Number(button.dataset.shift)) * 10) / 10;
+    activeIndex = -2;
+    updateDelayInfo();
+    syncLyrics();
+  });
+});
+
+modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    mode = button.dataset.mode;
+    lyrics = getLyricsForMode(mode);
+    offset = 0;
+    activeIndex = -2;
+    renderLyricsList();
+    updateDelayInfo();
+    syncLyrics();
+  });
+});
+
+document.querySelector("#reset-sync").addEventListener("click", () => {
+  mode = "mp4";
+  lyrics = mp4Lyrics;
+  offset = 0;
+  tapMode = false;
+  document.querySelector("#tap-panel").classList.remove("active");
+  activeIndex = -2;
+  renderLyricsList();
+  updateDelayInfo();
+  syncLyrics();
+});
+
+document.querySelector("#mark-vocal-start").addEventListener("click", () => {
+  mode = "mp4";
+  lyrics = mp4Lyrics;
+  offset = Math.round((lyrics[0].t - audio.currentTime) * 10) / 10;
+  activeIndex = -2;
+  renderLyricsList();
+  updateDelayInfo();
+  syncLyrics();
+  const note = document.querySelector("#calibrate-note");
+  note.textContent = `已把第一句對齊到 ${fmt(audio.currentTime)}，目前 offset ${offset.toFixed(1)} 秒。`;
+});
+
+function updateTapTarget() {
+  const target = document.querySelector("#tap-target");
+  if (tapIndex >= referenceLyrics.length) {
+    target.textContent = "已記錄完所有歌詞，請按「完成並使用手動同步」。";
+    return;
+  }
+  target.textContent = `第 ${tapIndex + 1} 句：${referenceLyrics[tapIndex].s}`;
+}
+
+function buildCustomLyricsFromTaps() {
+  const starts = tapStarts.slice();
+  if (starts.length < 2) return null;
+  return referenceLyrics.map((line, index) => {
+    const fallbackStart = starts[index] ?? (starts[starts.length - 1] + (index - starts.length + 1) * 5);
+    const nextStart = starts[index + 1] ?? Math.min((audio.duration || fallbackStart + 7), fallbackStart + 7);
+    return {
+      t: Math.max(0, Math.round(fallbackStart * 10) / 10),
+      e: Math.max(fallbackStart + 1, Math.round((nextStart - 0.12) * 10) / 10),
+      s: line.s
+    };
+  });
+}
+
+document.querySelector("#start-tap-sync").addEventListener("click", () => {
+  tapMode = true;
+  tapStarts = [];
+  tapIndex = 0;
+  offset = 0;
+  document.querySelector("#tap-panel").classList.add("active");
+  document.querySelector("#calibrate-note").textContent = "播放歌曲。每一句歌聲剛開始時按「記錄這一句」或空白鍵。";
+  updateTapTarget();
+});
+
+document.querySelector("#tap-line").addEventListener("click", () => {
+  if (!tapMode || tapIndex >= referenceLyrics.length) return;
+  tapStarts[tapIndex] = Math.round(audio.currentTime * 10) / 10;
+  tapIndex += 1;
+  updateTapTarget();
+});
+
+document.querySelector("#undo-tap").addEventListener("click", () => {
+  if (!tapMode || tapIndex <= 0) return;
+  tapIndex -= 1;
+  tapStarts.pop();
+  updateTapTarget();
+});
+
+document.querySelector("#finish-tap").addEventListener("click", () => {
+  const nextLyrics = buildCustomLyricsFromTaps();
+  if (!nextLyrics) {
+    document.querySelector("#calibrate-note").textContent = "至少要記錄前兩句，才有辦法建立手動同步。";
+    return;
+  }
+  saveCustomLyrics(nextLyrics);
+  mode = "custom";
+  lyrics = customLyrics;
+  offset = 0;
+  tapMode = false;
+  activeIndex = -2;
+  document.querySelector("#tap-panel").classList.remove("active");
+  document.querySelector("#calibrate-note").textContent = `已建立手動精準同步，目前記錄 ${tapStarts.length} 句。`;
+  renderLyricsList();
+  updateDelayInfo();
+  syncLyrics();
+});
+
+document.querySelector("#cancel-tap").addEventListener("click", () => {
+  tapMode = false;
+  tapStarts = [];
+  tapIndex = 0;
+  document.querySelector("#tap-panel").classList.remove("active");
+  document.querySelector("#calibrate-note").textContent = "已取消逐句打點同步。";
+});
+
+document.addEventListener("keydown", (event) => {
+  if (!tapMode || event.code !== "Space") return;
+  event.preventDefault();
+  document.querySelector("#tap-line").click();
+});
+
+lyricsList.addEventListener("click", (event) => {
+  const row = event.target.closest(".lyric-row");
+  if (!row) return;
+  const line = lyrics[Number(row.dataset.index)];
+  audio.currentTime = Math.max(0, line.t - offset);
+  audio.play();
+  playBtn.textContent = "Ⅱ";
+  playBtn.classList.add("on");
+  mbar.classList.add("playing");
+});
+
+document.querySelectorAll(".accordion-header").forEach((button) => {
+  button.addEventListener("click", () => {
+    const item = button.closest(".accordion-item");
+    const wasOpen = item.classList.contains("open");
+    document.querySelectorAll(".accordion-item").forEach(el => el.classList.remove("open"));
+    if (!wasOpen) item.classList.add("open");
+  });
+});
+
+window.addEventListener("scroll", () => {
+  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  progressBar.style.width = `${Math.min(100, (window.scrollY / max) * 100)}%`;
+}, { passive: true });
+
+renderLyricsList();
+updateDelayInfo();
+</script>
+</body>
+</html>
