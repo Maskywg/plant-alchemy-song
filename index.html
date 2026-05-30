@@ -609,6 +609,169 @@
 
   audio { display: none; }
 
+  /* Light botanical theme */
+  :root {
+    --text: #143326;
+    --muted: #3a6254;
+    --cyan: #007486;
+    --green: #269437;
+    --leaf: #4fae48;
+    --gold-light: #9a6a05;
+    --border: rgba(47, 124, 83, .22);
+  }
+
+  body {
+    color: #143326;
+    background:
+      radial-gradient(circle at 16% 10%, rgba(95, 194, 150, .32), transparent 32%),
+      radial-gradient(circle at 82% 4%, rgba(240, 180, 41, .24), transparent 30%),
+      radial-gradient(circle at 48% 78%, rgba(0, 168, 190, .14), transparent 34%),
+      linear-gradient(180deg, #f8fff2 0%, #eef9e7 47%, #fff8e7 100%);
+  }
+
+  body::before {
+    background-image:
+      linear-gradient(rgba(32, 106, 72, .08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(32, 106, 72, .07) 1px, transparent 1px);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,.45), transparent 82%);
+  }
+
+  #root-visual {
+    background:
+      radial-gradient(circle at 50% 42%, rgba(90, 190, 120, .23), transparent 31%),
+      radial-gradient(circle at 54% 68%, rgba(240, 180, 41, .14), transparent 24%);
+  }
+
+  .aurora {
+    opacity: .72;
+    background:
+      radial-gradient(ellipse at 22% 20%, rgba(57,255,20,.22), transparent 32%),
+      radial-gradient(ellipse at 78% 16%, rgba(240,180,41,.28), transparent 34%),
+      radial-gradient(ellipse at 50% 78%, rgba(0,229,255,.18), transparent 38%);
+  }
+
+  .header-badge,
+  .stat,
+  .intro-card,
+  .accordion-item,
+  .lyrics-panel {
+    background: rgba(255, 255, 250, .78);
+    border-color: rgba(47, 124, 83, .22);
+    box-shadow: 0 18px 54px rgba(78, 114, 68, .14);
+    backdrop-filter: blur(18px);
+  }
+
+  .header-badge {
+    color: #007486;
+    text-shadow: none;
+  }
+
+  .main-title {
+    color: #123a29;
+    text-shadow: 0 2px 0 rgba(255,255,255,.72), 0 12px 32px rgba(52,105,56,.18);
+  }
+
+  .button,
+  .calibrate-row button,
+  .tap-actions button {
+    color: #163422;
+    background: rgba(255,255,255,.58);
+  }
+
+  .button.primary {
+    color: #0d4b4f;
+    background: rgba(0, 148, 170, .14);
+  }
+
+  .subtitle,
+  .section-desc,
+  .intro-card p,
+  .accordion-content,
+  .lead,
+  .tap-status,
+  .hint {
+    color: #35564b;
+  }
+
+  .neon-cyan,
+  .lyric-row span:nth-child(1),
+  .lyric-row span:nth-child(2) {
+    color: #007486;
+    text-shadow: none;
+  }
+
+  .neon-green {
+    color: #2f8d38;
+    text-shadow: none;
+  }
+
+  .section-title,
+  .intro-card h3,
+  .stat strong,
+  .music-label {
+    color: #9a6a05;
+    text-shadow: 0 0 16px rgba(240,180,41,.25);
+  }
+
+  .stat span,
+  .acc-title,
+  .lyrics-panel h2,
+  .tap-target,
+  .lyric-row {
+    color: #143326;
+  }
+
+  .accordion-header:hover,
+  .lyric-row,
+  .tap-target,
+  .sync-mode button,
+  .lyrics-toolbar button {
+    background: rgba(255,255,255,.62);
+  }
+
+  .accordion-item.open,
+  .lyric-row.active {
+    border-color: rgba(240, 180, 41, .42);
+    box-shadow: 0 20px 58px rgba(154, 106, 5, .15);
+  }
+
+  .lyric-row.active {
+    background: linear-gradient(135deg, rgba(255, 237, 160, .68), rgba(210, 255, 210, .54));
+  }
+
+  .sync-mode button.active,
+  .lyrics-toolbar button:hover {
+    color: #163422;
+    background: rgba(240, 180, 41, .24);
+  }
+
+  #mbar-wrap {
+    box-shadow: 0 16px 44px rgba(70, 92, 48, .22);
+  }
+
+  #mbar-inner {
+    background: rgba(255, 255, 250, .96);
+  }
+
+  #music-label,
+  #delay-info {
+    color: #8a6107;
+  }
+
+  #lyric-line {
+    color: #17372a;
+  }
+
+  #play-btn {
+    color: #8a6107;
+    background: rgba(240,180,41,.16);
+  }
+
+  #play-btn.on {
+    color: #007486;
+    background: rgba(0, 148, 170, .12);
+  }
+
   @media (max-width: 840px) {
     .hero { min-height: 92vh; }
     .hero-copy { width: min(100% - 28px, 1120px); padding-top: 58px; }
@@ -789,7 +952,7 @@ import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
 
 const canvas = document.querySelector("#root-visual");
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x02060a, 0.045);
+scene.fog = new THREE.FogExp2(0xf4fff0, 0.035);
 
 const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 120);
 camera.position.set(0, 4.8, 18);
@@ -797,6 +960,7 @@ camera.position.set(0, 4.8, 18);
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0xf8fff2, 0);
 
 scene.add(new THREE.AmbientLight(0x6fdfff, 0.7));
 const keyLight = new THREE.PointLight(0x00e5ff, 80, 38);
