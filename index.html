@@ -667,8 +667,16 @@
   }
 
   .main-title {
-    color: #123a29;
-    text-shadow: 0 2px 0 rgba(255,255,255,.72), 0 12px 32px rgba(52,105,56,.18);
+    color: #0b2f22;
+    -webkit-text-stroke: 1px rgba(6, 40, 27, .55);
+    text-shadow: 0 2px 0 rgba(255,255,255,.82), 0 10px 26px rgba(30,70,38,.16);
+  }
+
+  .main-title::after {
+    opacity: .28;
+    background: linear-gradient(100deg, transparent 0%, transparent 18%, #7a4d08 32%, #c0820b 45%, #fff4b8 52%, #845c09 64%, transparent 82%, transparent 100%);
+    -webkit-text-stroke: 0;
+    text-shadow: none;
   }
 
   .button,
@@ -686,11 +694,33 @@
   .subtitle,
   .section-desc,
   .intro-card p,
+  .section-lead,
   .accordion-content,
+  .accordion-content p,
   .lead,
   .tap-status,
   .hint {
-    color: #35564b;
+    color: #21473b;
+    font-weight: 500;
+    text-shadow: none;
+  }
+
+  .subtitle strong:nth-child(1),
+  .subtitle strong:nth-child(2),
+  .subtitle strong:nth-child(3) {
+    text-shadow: none;
+  }
+
+  .subtitle strong:nth-child(1) {
+    color: #16742a;
+  }
+
+  .subtitle strong:nth-child(2) {
+    color: #006879;
+  }
+
+  .subtitle strong:nth-child(3) {
+    color: #9a6500;
   }
 
   .neon-cyan,
@@ -706,26 +736,44 @@
   }
 
   .section-title,
+  h2,
   .intro-card h3,
   .stat strong,
   .music-label {
-    color: #9a6a05;
-    text-shadow: 0 0 16px rgba(240,180,41,.25);
+    color: #7b5100;
+    text-shadow: 0 1px 0 rgba(255,255,255,.7);
   }
 
   .stat span,
+  .eyebrow,
+  .acc-num,
+  .acc-arrow,
   .acc-title,
   .lyrics-panel h2,
   .tap-target,
   .lyric-row {
     color: #143326;
+    text-shadow: none;
+  }
+
+  .eyebrow,
+  .acc-num,
+  .tag {
+    color: #006879;
+  }
+
+  .tag {
+    background: rgba(0, 104, 121, .08);
+    border-color: rgba(0, 104, 121, .22);
   }
 
   .accordion-header:hover,
   .lyric-row,
   .tap-target,
   .sync-mode button,
-  .lyrics-toolbar button {
+  .lyrics-toolbar button,
+  .calibrate-row,
+  .tap-panel {
     background: rgba(255,255,255,.62);
   }
 
@@ -741,8 +789,21 @@
 
   .sync-mode button.active,
   .lyrics-toolbar button:hover {
-    color: #163422;
+    color: #0c2b1f;
     background: rgba(240, 180, 41, .24);
+  }
+
+  .sync-mode button,
+  .lyrics-toolbar button,
+  .calibrate-row button,
+  .tap-actions button {
+    color: #163422;
+    border-color: rgba(33, 86, 64, .28);
+    text-shadow: none;
+  }
+
+  .sync-mode button:disabled {
+    color: rgba(20, 51, 38, .42);
   }
 
   #mbar-wrap {
@@ -755,11 +816,13 @@
 
   #music-label,
   #delay-info {
-    color: #8a6107;
+    color: #6f4b05;
+    text-shadow: none;
   }
 
   #lyric-line {
-    color: #17372a;
+    color: #09291d;
+    font-weight: 700;
   }
 
   #play-btn {
